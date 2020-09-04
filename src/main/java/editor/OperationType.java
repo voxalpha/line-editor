@@ -1,10 +1,13 @@
 package editor;
 
+/**
+ * List of supported operations
+ */
 public enum OperationType {
 
    LIST("list"),
-   DELETE("delete"),
-   INSERT("insert"),
+   DELETE("del"),
+   INSERT("ins"),
    SAVE("save"),
    QUIT("quit");
 

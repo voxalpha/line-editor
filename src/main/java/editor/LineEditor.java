@@ -21,7 +21,7 @@ public class LineEditor {
 
         CommandLineController controller = new CommandLineController(new SimpleParameterParser());
         System.out.println("File " + file.getAbsolutePath() + " loaded");
-        CommandLineEditor editor = new CommandLineEditor(controller, controller, file);
+        Editor editor = new Editor(controller, controller, file);
         editor.listContent();
 
         while (!controller.terminated()){

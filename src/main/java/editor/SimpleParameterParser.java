@@ -2,6 +2,11 @@ package editor;
 
 import java.util.Optional;
 
+/**
+ * Editor parameters parset
+ * Treats 1st argument as line number
+ * Joins all arguments after 1st as text
+ */
 public class SimpleParameterParser implements ParameterParser{
 
     @Override

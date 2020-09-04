@@ -1,0 +1,1 @@
+java -jar ../target/LineEditor-1.jar %1

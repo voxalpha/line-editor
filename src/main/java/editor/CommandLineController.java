@@ -2,6 +2,9 @@ package editor;
 import java.io.InputStream;
 import java.util.*;
 
+/**
+ * Console controller implementation
+ */
 public class CommandLineController implements Controller, Display{
 
     private final ParameterParser parser;
@@ -40,10 +43,15 @@ public class CommandLineController implements Controller, Display{
         }
     }
 
+    /**
+     * Encapsulate console interactions
+     * @param input - stream to take input
+     */
     public void prompt(InputStream input) {
         System.out.print(">> ");
         String commandString = (new Scanner(input)).nextLine();
         if (input != System.in)
+          //echo command to system out in case input is not from system in
           System.out.println(commandString);
         String[] commandLine = commandString.split(" ");
 

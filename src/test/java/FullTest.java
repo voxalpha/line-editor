@@ -1,5 +1,5 @@
 import editor.CommandLineController;
-import editor.CommandLineEditor;
+import editor.Editor;
 import editor.SimpleParameterParser;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class FullTest {
 
-   CommandLineEditor editor;
+   Editor editor;
    CommandLineController controller;
 
    @BeforeEach
@@ -24,45 +24,45 @@ public class FullTest {
                //new ByteArrayInputStream("zzz".getBytes()));
        File file = File.createTempFile("editor", ".tmp");
        Files.write(file.toPath(), Arrays.asList("line one", "line two", "line three"));
-       editor = new CommandLineEditor(controller, controller, file);
+       editor = new Editor(controller, controller, file);
    }
 
    @Test
    @DisplayName("Content manipulations")
    public void testContent(){
-       controller.prompt(new ByteArrayInputStream("insert 3 new line".getBytes()));
+       controller.prompt(new ByteArrayInputStream("ins 3 new line".getBytes()));
        assertTrue(controller.successful());
        assertEquals(4, editor.getContentSize());
        assertEquals("new line", editor.getLine(3));
        assertEquals("line three", editor.getLine(4));
 
-       controller.prompt(new ByteArrayInputStream("delete 1".getBytes()));
+       controller.prompt(new ByteArrayInputStream("del 1".getBytes()));
        assertTrue(controller.successful());
        assertEquals(3, editor.getContentSize());
        assertEquals("new line", editor.getLine(2));
        assertEquals("line three", editor.getLine(3));
 
-       controller.prompt(new ByteArrayInputStream("insert 8 aaa".getBytes()));
+       controller.prompt(new ByteArrayInputStream("ins 8 aaa".getBytes()));
        assertFalse(controller.successful());
        assertTrue(controller.getLastError().endsWith("Cannot insert line into position 8"));
 
-       controller.prompt(new ByteArrayInputStream("insert 0 aaa ".getBytes()));
+       controller.prompt(new ByteArrayInputStream("ins 0 aaa ".getBytes()));
        assertTrue(controller.getLastError().endsWith("Cannot insert line into position 0"));
        assertFalse(controller.successful());
 
-       controller.prompt(new ByteArrayInputStream("insert zzz aaa".getBytes()));
+       controller.prompt(new ByteArrayInputStream("ins zzz aaa".getBytes()));
        assertTrue(controller.getLastError().endsWith("zzz is not valid integer"));
        assertFalse(controller.successful());
 
-       controller.prompt(new ByteArrayInputStream("insert 8 aaa".getBytes()));
+       controller.prompt(new ByteArrayInputStream("ins 8 aaa".getBytes()));
        assertFalse(controller.successful());
        assertTrue(controller.getLastError().endsWith("Cannot insert line into position 8"));
 
-       controller.prompt(new ByteArrayInputStream("insert 0 aaa ".getBytes()));
+       controller.prompt(new ByteArrayInputStream("ins 0 aaa ".getBytes()));
        assertTrue(controller.getLastError().endsWith("Cannot insert line into position 0"));
        assertFalse(controller.successful());
 
-       controller.prompt(new ByteArrayInputStream("insert zzz aaa".getBytes()));
+       controller.prompt(new ByteArrayInputStream("ins zzz aaa".getBytes()));
        assertTrue(controller.getLastError().endsWith("zzz is not valid integer"));
        assertFalse(controller.successful());
    }
@@ -70,41 +70,41 @@ public class FullTest {
     @Test
     @DisplayName("Parameter correctness")
     public void testParams(){
-        controller.prompt(new ByteArrayInputStream("insert 1 aaa".getBytes()));
+        controller.prompt(new ByteArrayInputStream("ins 1 aaa".getBytes()));
         assertTrue(controller.successful());
 
-        controller.prompt(new ByteArrayInputStream("insert 8 aaa".getBytes()));
+        controller.prompt(new ByteArrayInputStream("ins 8 aaa".getBytes()));
         assertFalse(controller.successful());
         assertTrue(controller.getLastError().endsWith("Cannot insert line into position 8"));
 
-        controller.prompt(new ByteArrayInputStream("insert 0 aaa ".getBytes()));
+        controller.prompt(new ByteArrayInputStream("ins 0 aaa ".getBytes()));
         assertTrue(controller.getLastError().endsWith("Cannot insert line into position 0"));
         assertFalse(controller.successful());
 
-        controller.prompt(new ByteArrayInputStream("insert zzz aaa".getBytes()));
+        controller.prompt(new ByteArrayInputStream("ins zzz aaa".getBytes()));
         assertTrue(controller.getLastError().endsWith("zzz is not valid integer"));
         assertFalse(controller.successful());
 
-        controller.prompt(new ByteArrayInputStream("insert 1".getBytes()));
+        controller.prompt(new ByteArrayInputStream("ins 1".getBytes()));
         assertTrue(controller.getLastError().endsWith("insert should have 2 arguments"));
         assertFalse(controller.successful());
 
-        controller.prompt(new ByteArrayInputStream("delete 1".getBytes()));
+        controller.prompt(new ByteArrayInputStream("del 1".getBytes()));
         assertTrue(controller.successful());
 
-        controller.prompt(new ByteArrayInputStream("delete 8".getBytes()));
+        controller.prompt(new ByteArrayInputStream("del 8".getBytes()));
         assertFalse(controller.successful());
         assertTrue(controller.getLastError().endsWith("Cannot delete line 8"));
 
-        controller.prompt(new ByteArrayInputStream("delete 0".getBytes()));
+        controller.prompt(new ByteArrayInputStream("del 0".getBytes()));
         assertTrue(controller.getLastError().endsWith("Cannot delete line 0"));
         assertFalse(controller.successful());
 
-        controller.prompt(new ByteArrayInputStream("delete zzz".getBytes()));
+        controller.prompt(new ByteArrayInputStream("del zzz".getBytes()));
         assertTrue(controller.getLastError().endsWith("zzz is not valid integer"));
         assertFalse(controller.successful());
 
-        controller.prompt(new ByteArrayInputStream("delete".getBytes()));
+        controller.prompt(new ByteArrayInputStream("del".getBytes()));
         assertTrue(controller.getLastError().endsWith("delete should have 1 argument"));
         assertFalse(controller.successful());
 
